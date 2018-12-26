@@ -6,6 +6,7 @@ use think\Controller;
 class Index extends Controller {
 
 	public function index(){
-		echo 1;
+		echo '<pre>';
+		print_r(input());
 	}
 }

@@ -2,7 +2,8 @@
 namespace app\home\controller;
 
 use think\Controller;
-use aop\AopClient;
+//use aop\AopClient;
+require_once EXTEND_PATH.'aop'.DS.'AopClient.php';
 
 class AliPay extends Controller {
 
@@ -12,7 +13,7 @@ class AliPay extends Controller {
 	private $alipayrsaPublicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApP6efEMwAcl0+HXBOVSe4rdfJqKML8Fz3Qv1qfzkjCFNIQZJyUMjKJVT2/svOefzSsEe7ZZ3XR3e0bFs5t8F4CAtYbjUjKkzNONkznu4flxUOF3O0SYvLomd75j3104XjA6v5n7bwlW7KqzNvCdxp37bmVSzbgdeyutl+s6Uy1SIreklGHXxHjUZk7qeyND1PCOu4fm6jJQtHMuf8RtzCd+l16xrzcWoHj+Wbf55okDOd3UIDVnAgG0cQfHUtjX0JcKCmPpsHhjlBYVRTT8+1Zw64+xmJcrx0RHx9aNOOZRgX0f8s1IWJFSi82bz9lSCrtrDskdhBF8+PqIcbel7RQIDAQAB';   //支付宝公钥
 
 	private $notify_url = '';  //异步通知地址
-	private $return_url = 'https://www.baidu.com/';  //同步跳转地址
+	private $return_url = 'http://www.kpay.com/index.php/home/Index/index';  //同步跳转地址
 
 	/**
 	 * [alipayTradePagePay 电脑网站统一收单下单并支付]
@@ -20,7 +21,7 @@ class AliPay extends Controller {
 	 */
 	public function alipayTradePagePay(){
 		//构造参数  
-		$aop = new AopClient ();  
+		$aop = new \AopClient ();  
 		$aop->gatewayUrl = $this->gatewayUrl;  
 		$aop->appId = $this->appId;  
 		$aop->rsaPrivateKey = $this->rsaPrivateKey;
@@ -34,16 +35,51 @@ class AliPay extends Controller {
 		$request->setNotifyUrl($this->notify_url);  
 		$request->setBizContent('{
 		  "product_code": "FAST_INSTANT_TRADE_PAY",
-		  "out_trade_no": "20150320010101010",
+		  "out_trade_no": "20150320010101016",
 		  "subject": "Iphone6 16G",
 		  "total_amount": "1.00",
 		  "body": "Iphone6 16G"
 		}');
 
 		//请求  
-		$result = $aop->pageExecute ($request);
+		$result = $aop->pageExecute($request);
 
 		//输出  
 		echo $result;
+	}
+
+	/**
+	 * [alipayTradeRefund 电脑网站统一收单交易退款接口]
+	 * @return [type] [description]
+	 */
+	public function alipayTradeRefund(){
+		//构造参数  
+		$aop = new \AopClient ();  
+		$aop->gatewayUrl = $this->gatewayUrl;  
+		$aop->appId = $this->appId;  
+		$aop->rsaPrivateKey = $this->rsaPrivateKey;
+		$aop->alipayrsaPublicKey = $this->alipayrsaPublicKey;  
+		$aop->apiVersion = '1.0';  
+		$aop->signType = 'RSA2';  
+		$aop->postCharset= 'utf-8';  
+		$aop->format='json';
+		$request = new \AlipayTradeRefundRequest ();
+		$request->setBizContent('{
+			"out_trade_no":"20150320010101015",
+			"trade_no":"2018122622001425430500697026",
+			"refund_amount":1.00,
+			"refund_currency":"USD",
+			"refund_reason":"正常退款"
+		}');
+		$result = $aop->execute($request); 
+		echo '<pre>';
+		print_r($result);
+		$responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+		$resultCode = $result->$responseNode->code;
+		if(!empty($resultCode)&&$resultCode == 10000){
+			echo "成功";
+		} else {
+			echo "失败";
+		}
 	}
 }
