@@ -35,7 +35,7 @@ class AliPay extends Controller {
 		$request->setNotifyUrl($this->notify_url);  
 		$request->setBizContent('{
 		  "product_code": "FAST_INSTANT_TRADE_PAY",
-		  "out_trade_no": "20150320010101016",
+		  "out_trade_no": "20150320010101019",
 		  "subject": "Iphone6 16G",
 		  "total_amount": "1.00",
 		  "body": "Iphone6 16G"
@@ -65,10 +65,9 @@ class AliPay extends Controller {
 		$aop->format='json';
 		$request = new \AlipayTradeRefundRequest ();
 		$request->setBizContent('{
-			"out_trade_no":"20150320010101015",
-			"trade_no":"2018122622001425430500697026",
+			"out_trade_no":"20150320010101018",
+			"trade_no":"2018122722001425430500697038",
 			"refund_amount":1.00,
-			"refund_currency":"USD",
 			"refund_reason":"正常退款"
 		}');
 		$result = $aop->execute($request); 
