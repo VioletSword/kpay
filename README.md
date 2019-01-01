@@ -3,7 +3,9 @@
 
 使用的支付宝SDK版本为alipay-sdk-PHP-3.3.1
 
-引入自己项目时不需要包含alipay-sdk-PHP-3.3.1.zi压缩包，此压缩包仅做一个SDK备份，使用时可删除此压缩包
+引入自己项目时不需要包含demo.php和alipay-sdk-PHP-3.3.1.zi压缩包，此压缩包仅做一个SDK备份，使用时可删除此压缩包
+
+demo.php仅供参考
 
 使用说明：
 
