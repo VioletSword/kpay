@@ -10,24 +10,25 @@ require_once 'Kpay.php';
 	
 		$alipay = new \Kpay();
 		
-		/*$data_pay = [
-			'out_trade_no' => '2018122812345678986',
+		$data_pay = [
+			'out_trade_no' => '2018122812345679091',
 			'subject'      => '买个锤子',
-			'total_amount' => '0.01'
+			'total_amount' => '0.01',
 		];
 		
 		$alipay->alipayTradePagePay($data_pay);
 		
 		
 		die;
-		*/
+		/**/
 	
 	//退款测试
 	
 	$data_refundy = [
-		'out_trade_no' => '2018122812345678986',
+		'out_trade_no' => '2018122812345679091',
 		'trade_no'      => '2019010122001425430500705818',
-		'refund_amount' => '0.01'
+		'refund_amount' => '0.01',
+		'refund_reason' => '正常退款'
 	];
 	
 	$result = $alipay->alipayTradeRefund($data_refundy);

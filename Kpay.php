@@ -3,7 +3,7 @@
  * 
  * @authors kk (15625591878@163.com)
  * @date    2019-01-01 21:23:11
- * @version 2.0
+ * @version 2.1
  */
 
 defined('DS') or define('DS',DIRECTORY_SEPARATOR);
@@ -44,17 +44,20 @@ class Kpay {
    * @return [type] [description]
    */
   public function alipayTradePagePay($data){
-    
+    $data['product_code'] = 'FAST_INSTANT_TRADE_PAY';
+    $data = json_encode($data);  //将参数转为json字符串
+
     $request = new AlipayTradePagePayRequest();  
     $request->setReturnUrl($this->return_url);  
     $request->setNotifyUrl($this->notify_url);
     
-    $request->setBizContent('{
+    /*'{
       "product_code": "FAST_INSTANT_TRADE_PAY",
       "out_trade_no": "'.$data['out_trade_no'].'",
       "subject": "'.$data['subject'].'",
       "total_amount": "'.$data['total_amount'].'"
-    }');
+    }'*/
+    $request->setBizContent($data);
 
     //请求  
     $result = $this->aop->pageExecute($request);
@@ -68,18 +71,15 @@ class Kpay {
    * @return [type] [description]
    */
   public function alipayTradeWapPay($data){
-     
+    $data['product_code'] = 'QUICK_WAP_WAY';
+    $data['timeout_express'] = '30m';
+    $data = json_encode($data);  //将参数转为json字符串
+    
     $request = new AlipayTradeWapPayRequest();  
     $request->setReturnUrl($this->return_url);  
     $request->setNotifyUrl($this->notify_url); 
      
-    $request->setBizContent('{
-        "subject":"'.$data['subject'].'",
-        "out_trade_no":"'.$data['out_trade_no'].'",
-        "timeout_express":"30m",
-        "total_amount":"'.$data['total_amount'].'",
-        "product_code":"QUICK_WAP_WAY"
-     }');
+    $request->setBizContent($data);
 
     //请求  
     $result = $this->aop->pageExecute($request);
@@ -94,13 +94,16 @@ class Kpay {
    */
   public function alipayTradeRefund($data){
     
+    $data = json_encode($data);
+
     $request = new AlipayTradeRefundRequest();
-    $request->setBizContent('{
+    /*$request->setBizContent('{
       "out_trade_no":"'.$data['out_trade_no'].'",
       "trade_no":"'.$data['trade_no'].'",
       "refund_amount":"'.$data['refund_amount'].'",
       "refund_reason":"正常退款"
-    }');
+    }');*/
+     $request->setBizContent($data);
     $result = $this->aop->execute($request); 
     echo '<pre>';
     print_r($result);
