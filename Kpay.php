@@ -3,7 +3,7 @@
  * 
  * @authors kk (15625591878@163.com)
  * @date    2019-01-01 21:23:11
- * @version 2.1
+ * @version 2.2
  */
 
 defined('DS') or define('DS',DIRECTORY_SEPARATOR);
@@ -118,6 +118,27 @@ class Kpay {
     }
   }
   
+  /**
+   * [alipayUserInfoAuthRequest description] 用户登陆授权
+   * @param  [type] $data [description]
+   * @return [type]       [description]
+   */
+  public function alipayUserInfoAuthRequest ($data){
+    $data = json_encode($data);  //将参数转为json字符串
+
+    $request = new AlipayUserInfoAuthRequest();  
+    $request->setReturnUrl($this->return_url);  
+    $request->setNotifyUrl($this->notify_url);
+    
+    $request->setBizContent($data);
+
+    //请求  
+    $result = $this->aop->execute($request);
+
+    //输出  
+    echo $result;
+  }
+
   /**
    * 验签方法，验签支付宝返回的信息，需要使用到支付宝公钥
    * @return boolean
